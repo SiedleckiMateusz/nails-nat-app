@@ -18,21 +18,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/employeeTest")
-                .hasAnyAuthority("EMPLOYEE","ADMIN")
-                .and()
-                .authorizeRequests()
-                .antMatchers("/adminTest")
-                .hasAuthority("ADMIN")
-                .and()
-                .authorizeRequests()
-                .antMatchers("/clientTest")
-                .authenticated()
-                .and()
-                .authorizeRequests()
                 .antMatchers("/h2-console/*")
                 .permitAll();
-
 
         http.headers().frameOptions().disable()
                 .and().csrf().disable();
