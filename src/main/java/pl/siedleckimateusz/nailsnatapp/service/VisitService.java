@@ -18,6 +18,6 @@ public class VisitService {
     }
 
     public VisitEntity save(NewVisit newVisit){
-        return repo.save(mapper.toEntity(newVisit));
+        return repo.save(mapper.toSave(newVisit));
     }
 }

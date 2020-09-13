@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Umów wizytę</title>
+</head>
+<body>
+
+
+<form action="/visit" method="post" th:object="${visit}">
+    <p>Wybierz zabieg</p>
+    <div  th:each="treatmentForm, treatment:${allTreatments}">
+        <div>
+            <input type="checkbox" th:field="*{treatmentFormList[__${treatment.index}__].treatmentId}"
+                   th:value="${treatmentForm.id}">
+            <label th:text="${treatmentForm.name}">Nazwa zabiegu</label>
+                <input th:if="${!treatmentForm.allFingers}"
+                       th:field="*{treatmentFormList[__${treatment.index}__].treatmentNumbers}"
+                       type="number" placeholder="Ile palców">
+        </div>
+    </div>
+
+    <label>Wybierz dzień wizyty: </label>
+    <input type="date" th:field="*{startDateTime}" th:value="${#dates.createNow()}">
+    <label>Godzinę wybierzemy w kolejnym kroku</label>
+    <br/>
+<!--           min="2018-06-07T00:00" max="2018-06-14T00:00">-->
+
+
+    <textarea th:field="*{comment}" rows="4" cols="50" placeholder="Dodatkowe informacje">
+
+    </textarea>
+
+    <br>
+    <input type="submit" value="Wyślij do akceptacji">
+
+</form>
+
+</body>
+</html>

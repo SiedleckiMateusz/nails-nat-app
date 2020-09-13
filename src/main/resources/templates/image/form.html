@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj nowe zdjęcie</title>
+</head>
+<body>
+<!--/*@thymesVar id="photo" type="pl.siedleckimateusz.nailsnatapp.entity.model.PhotoForm"*/-->
+<form method="POST" action="/photo" th:object="${photo}" enctype="multipart/form-data">
+    <input type="text" placeholder="Nazwa" th:field="*{name}">
+
+    <input type="text" placeholder="Opis" th:field="*{description}"/>
+    <input type="file" th:field="*{file}"/>
+    <!--/*@thymesVar id="PhotoType" type="pl.siedleckimateusz.nailsnatapp.entity.PhotoType"*/-->
+    <div th:each="myType:${photoTypes}">
+        <div>
+            <input type="radio" th:field="*{type}" th:value="${myType}">
+            <label th:text="${myType.name}">Huey</label>
+        </div>
+    </div>
+    <div th:each="category:${allPhotoCategories}">
+        <div>
+            <input type="checkbox" th:field="*{photoCategoryIds}" th:value="${category.id}">
+            <label th:text="${category.name}">Horns</label>
+        </div>
+    </div>
+    <input type="submit" value="Dodaj"/>
+</form>
+
+</body>
+</html>

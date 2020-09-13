@@ -31,7 +31,7 @@ class UserMapperTest {
                 .authority(Authority.CLIENT)
                 .build();
 //    when
-        UserEntity userEntity = userMapper.toEntity(newUser);
+        UserEntity userEntity = userMapper.toSave(newUser);
 
 //    then
 
@@ -42,7 +42,7 @@ class UserMapperTest {
     @Test
     void mapNullValue(){
 //        when
-        UserEntity userEntity = userMapper.toEntity(null);
+        UserEntity userEntity = userMapper.toSave(null);
 //        then
         assertNull(userEntity);
     }

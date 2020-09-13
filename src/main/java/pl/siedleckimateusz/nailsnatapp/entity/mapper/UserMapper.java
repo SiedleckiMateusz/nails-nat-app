@@ -15,7 +15,7 @@ public class UserMapper implements Mapper<NewUser,UserEntity> {
     }
 
     @Override
-    public UserEntity toEntity(NewUser newUser){
+    public UserEntity toSave(NewUser newUser){
         return newUser == null? null : UserEntity.builder()
                 .firstName(newUser.getFirstName())
                 .lastName(newUser.getLastName())

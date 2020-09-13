@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.siedleckimateusz.nailsnatapp.entity.GroupTreatment;
 import pl.siedleckimateusz.nailsnatapp.entity.TreatmentEntity;
-import pl.siedleckimateusz.nailsnatapp.entity.model.NewTreatment;
+import pl.siedleckimateusz.nailsnatapp.entity.model.TreatmentModel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -21,7 +21,7 @@ class TreatmentMapperTest {
     @Test
     void mapToEntity() {
 //    given
-        NewTreatment sample_treatment = NewTreatment.builder()
+        TreatmentModel sample_treatment = TreatmentModel.builder()
                 .name("Sample Treatment")
                 .allFingers(true)
                 .time(20)
@@ -30,7 +30,7 @@ class TreatmentMapperTest {
                 .build();
 
 //    when
-        TreatmentEntity treatmentEntity = treatmentMapper.toEntity(sample_treatment);
+        TreatmentEntity treatmentEntity = treatmentMapper.toSave(sample_treatment);
 //    given
         assertEquals(treatmentEntity.getName(),sample_treatment.getName());
 
@@ -39,7 +39,7 @@ class TreatmentMapperTest {
     @Test
     void mapNullValue(){
 //        when
-        TreatmentEntity treatmentEntity = treatmentMapper.toEntity(null);
+        TreatmentEntity treatmentEntity = treatmentMapper.toSave(null);
 
 //        then
 

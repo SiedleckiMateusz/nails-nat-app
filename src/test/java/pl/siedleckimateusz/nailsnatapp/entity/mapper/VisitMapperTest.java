@@ -25,13 +25,13 @@ class VisitMapperTest {
     void mapToEntity() {
 //        given
         NewVisit visit = NewVisit.builder()
-                .visitDateTime(LocalDateTime.now())
+                .startVisitDateTime(LocalDateTime.now())
                 .treatmentList(Collections.singletonList(new TreatmentEntity()))
                 .user(new UserEntity())
                 .comments("My comment")
                 .build();
 //        when
-        VisitEntity visitEntity = mapper.toEntity(visit);
+        VisitEntity visitEntity = mapper.toSave(visit);
 //        then
 
         assertNotNull(visitEntity);
@@ -41,7 +41,7 @@ class VisitMapperTest {
 
     void mapNullValue(){
 //        when
-        VisitEntity visitEntity = mapper.toEntity(null);
+        VisitEntity visitEntity = mapper.toSave(null);
 //        then
         assertNull(visitEntity);
     }

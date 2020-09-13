@@ -18,7 +18,9 @@ public class VisitEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime visitDateTime;
+    private LocalDateTime startDateTime;
+
+    private LocalDateTime endDateTime;
 
     private LocalDateTime createdDateTime;
 
@@ -37,11 +39,33 @@ public class VisitEntity {
     private List<TreatmentEntity> treatmentList;
 
     @Builder
-    public VisitEntity(LocalDateTime visitDateTime, UserEntity user, List<TreatmentEntity> treatmentList, String comments) {
-        this.visitDateTime = visitDateTime;
-        this.user = user;
+    public VisitEntity(LocalDateTime startDateTime, UserEntity user, List<TreatmentEntity> treatmentList, String comments) {
+        this.startDateTime = startDateTime;
         this.treatmentList = treatmentList;
+        this.user = user;
         this.comments = comments;
         this.createdDateTime = LocalDateTime.now();
+        this.endDateTime = startDateTime.plusMinutes(countVisitTime());
+    }
+
+    private long countVisitTime() {
+        long sum=0L;
+
+        for (TreatmentEntity t:treatmentList){
+            sum+=t.getTime();
+        }
+
+        return sum;
+    }
+
+
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+        this.endDateTime = startDateTime.plusMinutes(countVisitTime());
+    }
+
+    public void setTreatmentList(List<TreatmentEntity> treatmentList) {
+        this.treatmentList = treatmentList;
+        this.endDateTime = startDateTime.plusMinutes(countVisitTime());
     }
 }

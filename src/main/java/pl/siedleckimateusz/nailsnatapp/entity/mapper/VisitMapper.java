@@ -9,9 +9,9 @@ public class VisitMapper implements Mapper<NewVisit, VisitEntity> {
 
 
     @Override
-    public VisitEntity toEntity(NewVisit newObj) {
+    public VisitEntity toSave(NewVisit newObj) {
         return newObj == null ? null : VisitEntity.builder()
-                .visitDateTime(newObj.getVisitDateTime())
+                .startDateTime(newObj.getStartVisitDateTime())
                 .comments(newObj.getComments())
                 .treatmentList(newObj.getTreatmentList())
                 .user(newObj.getUser())

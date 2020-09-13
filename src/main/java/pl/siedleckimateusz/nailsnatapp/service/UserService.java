@@ -25,7 +25,7 @@ public class UserService implements UserDetailsService {
 
 
     public UserEntity save(NewUser user) {
-        return repo.save(mapper.toEntity(user));
+        return repo.save(mapper.toSave(user));
     }
 
     public Optional<UserEntity> findById(Long id){

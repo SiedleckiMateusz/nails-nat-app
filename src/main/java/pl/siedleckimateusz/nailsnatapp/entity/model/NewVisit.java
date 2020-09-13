@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class NewVisit {
 
-    private LocalDateTime visitDateTime;
+    private LocalDateTime startVisitDateTime;
     private UserEntity user;
     private List<TreatmentEntity> treatmentList;
     private String comments;

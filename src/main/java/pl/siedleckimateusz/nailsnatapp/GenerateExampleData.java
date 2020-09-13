@@ -6,9 +6,11 @@ import pl.siedleckimateusz.nailsnatapp.entity.Authority;
 import pl.siedleckimateusz.nailsnatapp.entity.GroupTreatment;
 import pl.siedleckimateusz.nailsnatapp.entity.TreatmentEntity;
 import pl.siedleckimateusz.nailsnatapp.entity.UserEntity;
-import pl.siedleckimateusz.nailsnatapp.entity.model.NewTreatment;
+import pl.siedleckimateusz.nailsnatapp.entity.model.TreatmentModel;
 import pl.siedleckimateusz.nailsnatapp.entity.model.NewUser;
 import pl.siedleckimateusz.nailsnatapp.entity.model.NewVisit;
+import pl.siedleckimateusz.nailsnatapp.entity.model.PhotoCategoryModel;
+import pl.siedleckimateusz.nailsnatapp.service.PhotoCategoryService;
 import pl.siedleckimateusz.nailsnatapp.service.TreatmentService;
 import pl.siedleckimateusz.nailsnatapp.service.UserService;
 import pl.siedleckimateusz.nailsnatapp.service.VisitService;
@@ -22,11 +24,13 @@ public class GenerateExampleData implements CommandLineRunner {
     private final UserService userService;
     private final TreatmentService treatmentService;
     private final VisitService visitService;
+    private final PhotoCategoryService photoCategoryService;
 
-    public GenerateExampleData(UserService userService, TreatmentService treatmentService, VisitService visitService) {
+    public GenerateExampleData(UserService userService, TreatmentService treatmentService, VisitService visitService, PhotoCategoryService photoCategoryService) {
         this.userService = userService;
         this.treatmentService = treatmentService;
         this.visitService = visitService;
+        this.photoCategoryService = photoCategoryService;
     }
 
     @Override
@@ -34,7 +38,9 @@ public class GenerateExampleData implements CommandLineRunner {
         generateUsers();
         generateTreatments();
         generateVisit();
+        generatePhotoCategories();
     }
+
 
     private void generateUsers() {
         NewUser userMatt = NewUser.builder()
@@ -74,7 +80,7 @@ public class GenerateExampleData implements CommandLineRunner {
 
     private void generateTreatments() {
 
-        treatmentService.save(NewTreatment.builder()
+        treatmentService.save(TreatmentModel.builder()
                 .name("Ściąganie poprzedniej stylizacji")
                 .group(GroupTreatment.TECHNICAL)
                 .price(20)
@@ -82,7 +88,7 @@ public class GenerateExampleData implements CommandLineRunner {
                 .allFingers(true)
                 .build());
 
-        treatmentService.save(NewTreatment.builder()
+        treatmentService.save(TreatmentModel.builder()
                 .name("Obróbka skórek")
                 .group(GroupTreatment.TECHNICAL)
                 .price(15)
@@ -90,7 +96,7 @@ public class GenerateExampleData implements CommandLineRunner {
                 .allFingers(true)
                 .build());
 
-        treatmentService.save(NewTreatment.builder()
+        treatmentService.save(TreatmentModel.builder()
                 .name("Łatanie włóknami")
                 .group(GroupTreatment.TECHNICAL)
                 .price(5)
@@ -98,7 +104,7 @@ public class GenerateExampleData implements CommandLineRunner {
                 .allFingers(false)
                 .build());
 
-        treatmentService.save(NewTreatment.builder()
+        treatmentService.save(TreatmentModel.builder()
                 .name("Przedłużanie żelem")
                 .group(GroupTreatment.TECHNICAL)
                 .price(5)
@@ -106,7 +112,7 @@ public class GenerateExampleData implements CommandLineRunner {
                 .allFingers(false)
                 .build());
 
-        treatmentService.save(NewTreatment.builder()
+        treatmentService.save(TreatmentModel.builder()
                 .name("Malowanie - jeden kolor")
                 .group(GroupTreatment.PAINTING)
                 .price(15)
@@ -114,7 +120,7 @@ public class GenerateExampleData implements CommandLineRunner {
                 .allFingers(true)
                 .build());
 
-        treatmentService.save(NewTreatment.builder()
+        treatmentService.save(TreatmentModel.builder()
                 .name("Malowanie kilka kolorów")
                 .group(GroupTreatment.PAINTING)
                 .price(20)
@@ -122,7 +128,7 @@ public class GenerateExampleData implements CommandLineRunner {
                 .allFingers(true)
                 .build());
 
-        treatmentService.save(NewTreatment.builder()
+        treatmentService.save(TreatmentModel.builder()
                 .name("Pyłek")
                 .group(GroupTreatment.PAINTING)
                 .price(10)
@@ -130,7 +136,7 @@ public class GenerateExampleData implements CommandLineRunner {
                 .allFingers(true)
                 .build());
 
-        treatmentService.save(NewTreatment.builder()
+        treatmentService.save(TreatmentModel.builder()
                 .name("Zdobienie")
                 .group(GroupTreatment.PAINTING)
                 .price(10)
@@ -144,13 +150,21 @@ public class GenerateExampleData implements CommandLineRunner {
         List<UserEntity> allUsers = userService.findAll();
 
         NewVisit newVisit = NewVisit.builder()
-                .visitDateTime(LocalDateTime.of(2020,10,4,12,30))
+                .startVisitDateTime(LocalDateTime.of(2020,10,4,12,30))
                 .user(allUsers.get(1))
                 .treatmentList(allTreatment.subList(3,5))
                 .comments("Mam nadzieję że będzie ok")
                 .build();
 
         visitService.save(newVisit);
+    }
+
+
+    private void generatePhotoCategories() {
+        photoCategoryService.save(PhotoCategoryModel.builder().name("Jeden kolor").build());
+        photoCategoryService.save(PhotoCategoryModel.builder().name("Kilka kolorów").build());
+        photoCategoryService.save(PhotoCategoryModel.builder().name("Pyłek/brokat").build());
+        photoCategoryService.save(PhotoCategoryModel.builder().name("Własny rysunek").build());
     }
 
 

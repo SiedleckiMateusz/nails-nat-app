@@ -3,11 +3,12 @@ package pl.siedleckimateusz.nailsnatapp.service;
 import org.springframework.stereotype.Service;
 import pl.siedleckimateusz.nailsnatapp.entity.TreatmentEntity;
 import pl.siedleckimateusz.nailsnatapp.entity.mapper.TreatmentMapper;
-import pl.siedleckimateusz.nailsnatapp.entity.model.NewTreatment;
+import pl.siedleckimateusz.nailsnatapp.entity.model.TreatmentModel;
 import pl.siedleckimateusz.nailsnatapp.repository.TreatmentRepo;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TreatmentService {
@@ -20,8 +21,8 @@ public class TreatmentService {
         this.mapper = mapper;
     }
 
-    public TreatmentEntity save(NewTreatment treatment) {
-        return repo.save(mapper.toEntity(treatment));
+    public TreatmentEntity save(TreatmentModel treatment) {
+        return repo.save(mapper.toSave(treatment));
     }
 
     public Optional<TreatmentEntity> findById(Long id){
@@ -30,5 +31,12 @@ public class TreatmentService {
 
     public List<TreatmentEntity> findAll(){
         return repo.findAll();
+    }
+
+    public List<TreatmentModel> findAllTreatmentModel(){
+        return repo.findAll()
+                .stream()
+                .map(mapper::toModel)
+                .collect(Collectors.toList());
     }
 }
