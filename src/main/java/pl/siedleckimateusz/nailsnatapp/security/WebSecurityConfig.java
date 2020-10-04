@@ -10,28 +10,42 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final SimpleUrlAuthenticationSuccessHandlerImpl successHandler;
+
+    public WebSecurityConfig(SimpleUrlAuthenticationSuccessHandlerImpl successHandler) {
+        this.successHandler = successHandler;
+        this.successHandler.setUseReferer(true);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().permitAll()
-                .and()
-                .logout()
-                .and()
-                .authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers("/visit/**")
                 .authenticated()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/h2-console/*")
-                .permitAll();
-
-        http.headers().frameOptions().disable()
-                .and().csrf().disable();
+                .permitAll()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/login")
+                .not().authenticated()
+                .and()
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+//                    .successHandler(successHandler)
+                    .and()
+                    .logout()
+                .and()
+                .headers()
+                    .frameOptions().disable()
+                    .and()
+                    .csrf().disable();
     }
 
     @Bean
     public PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
 }

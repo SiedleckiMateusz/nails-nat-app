@@ -14,6 +14,6 @@ public class NewVisit {
 
     private LocalDateTime startVisitDateTime;
     private UserEntity user;
-    private List<TreatmentEntity> treatmentList;
+    private TreatmentEntity treatment;
     private String comments;
 }

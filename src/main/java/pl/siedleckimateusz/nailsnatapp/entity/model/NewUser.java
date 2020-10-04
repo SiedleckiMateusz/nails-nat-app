@@ -22,4 +22,6 @@ public class NewUser {
 
     private Authority authority;
 
+    private int extraTime;
+
 }

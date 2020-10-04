@@ -5,8 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
@@ -18,54 +19,35 @@ public class VisitEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime startDateTime;
+    private LocalDate dateOfVisit;
 
-    private LocalDateTime endDateTime;
+    private LocalTime startTime;
+
+    private LocalTime endTime;
 
     private LocalDateTime createdDateTime;
 
-    private Boolean confirmed = false;
+    private VisitStatus status = VisitStatus.TO_CONFIRM_BY_EMPLOYEE;
 
-    private String comments;
+    private String moreInfo;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "treatment_visit"
-            , joinColumns = @JoinColumn(name = "visit_id")
-            , inverseJoinColumns = @JoinColumn(name = "treatment_id"))
-    private List<TreatmentEntity> treatmentList;
+    @ManyToOne
+    @JoinColumn(name = "treatment_id",nullable = false)
+    private TreatmentEntity treatment;
 
     @Builder
-    public VisitEntity(LocalDateTime startDateTime, UserEntity user, List<TreatmentEntity> treatmentList, String comments) {
-        this.startDateTime = startDateTime;
-        this.treatmentList = treatmentList;
-        this.user = user;
-        this.comments = comments;
+    public VisitEntity(LocalDate dateOfVisit, LocalTime startTime
+            , String moreInfo, UserEntity user, TreatmentEntity treatment) {
+        this.dateOfVisit = dateOfVisit;
+        this.startTime = startTime;
+        this.endTime = startTime.plusMinutes(treatment.getTime());
         this.createdDateTime = LocalDateTime.now();
-        this.endDateTime = startDateTime.plusMinutes(countVisitTime());
-    }
-
-    private long countVisitTime() {
-        long sum=0L;
-
-        for (TreatmentEntity t:treatmentList){
-            sum+=t.getTime();
-        }
-
-        return sum;
-    }
-
-
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        this.startDateTime = startDateTime;
-        this.endDateTime = startDateTime.plusMinutes(countVisitTime());
-    }
-
-    public void setTreatmentList(List<TreatmentEntity> treatmentList) {
-        this.treatmentList = treatmentList;
-        this.endDateTime = startDateTime.plusMinutes(countVisitTime());
+        this.moreInfo = moreInfo;
+        this.user = user;
+        this.treatment = treatment;
     }
 }

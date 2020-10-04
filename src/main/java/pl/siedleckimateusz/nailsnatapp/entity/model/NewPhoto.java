@@ -4,7 +4,6 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import pl.siedleckimateusz.nailsnatapp.entity.PhotoCategoryEntity;
 import pl.siedleckimateusz.nailsnatapp.entity.PhotoType;
 
 import java.util.List;

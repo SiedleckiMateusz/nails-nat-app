@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},~{::head},'Udało się - Beauty by Siedlecka')}">
+<head>
+  <meta charset="UTF-8">
+  <title>Udało się!</title>
+</head>
+<body>
+        <div class="container my-5 py-5">
+            <div class="jumbotron">
+                <h1 class="display-4" th:text="${title}">Gratulacje</h1>
+                <p class="lead" th:text="${message}">Udało się</p>
+                <hr class="my-4">
+                <br/>
+
+                <a class="btn btn-primary" href="/">Strona główna</a>
+
+            </div>
+
+        </div>
+
+</body>
+</html>

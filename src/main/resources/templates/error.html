@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},~{::head},'Error - Beauty by Siedlecka')}">
+<head>
+  <meta charset="UTF-8">
+  <title>$Title$</title>
+</head>
+<body>
+    <div class="container my-5 py-5">
+        <div class="jumbotron">
+            <h1 class="display-4" th:text="${title!=null?title:'Upss...'}">Error</h1>
+            <p class="lead" th:text="${errorMessage!=null?errorMmessage:'Coś poszło nie tak jak powinno.. Przepraszamy :-('}">Udało się</p>
+            <hr class="my-4">
+            <br/>
+
+            <a class="btn btn-primary" href="/">Strona główna</a>
+        </div>
+
+    </div>
+</body>
+</html>

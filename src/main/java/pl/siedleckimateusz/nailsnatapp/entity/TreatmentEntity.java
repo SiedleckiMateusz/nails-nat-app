@@ -18,26 +18,20 @@ public class TreatmentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private GroupTreatment groupTreatment;
-
     private String name;
 
     private Integer time;
 
     private Integer price;
 
-    private boolean allFinger;
-
-    @ManyToMany(mappedBy = "treatmentList")
+    @OneToMany(mappedBy = "treatment")
     private List<VisitEntity> visitsList;
 
     @Builder
-    public TreatmentEntity(GroupTreatment groupTreatment, String name, Integer time, Integer price, boolean allFinger) {
-        this.groupTreatment = groupTreatment;
+    public TreatmentEntity( String name, Integer time, Integer price) {
         this.name = name;
         this.time = time;
         this.price = price;
-        this.allFinger = allFinger;
     }
 }
 

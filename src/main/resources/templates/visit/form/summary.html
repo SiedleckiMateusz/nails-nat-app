@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},~{::head},'Podsumowanie wizyty - Beauty by Siedlecka')}">
+<head>
+    <title>Podsumowanie wizyty</title>
+</head>
+<body>
+
+<div class="container mt-5 py-5">
+    <div class="jumbotron myForm text-white">
+        <h1 class="display-4">Podsumowanie</h1>
+        <p class="lead">Sprawdź czy parametry wizyty są poprawne. Jeśli chcesz coś poprawić kliknij przycisk obok
+            wartości którą chcesz zmienić</p>
+        <hr class="my-4">
+        <br/>
+
+        <div class="row">
+            <table class="table table-hover text-white">
+                <tbody>
+                <tr>
+                    <th scope="row">Zabieg:</th>
+                    <td th:text="${visitForm.treatment.name}">Nazwa zabiegu</td>
+                    <td><a class="btn-link" href="/visit/set-treatment">Zmień</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">Data:</th>
+                    <td th:text="${visitForm.getStringDate()}">12-31-21</td>
+                    <td><a class="btn-link" href="/visit/set-date">Zmień</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">Godzina:</th>
+                    <td th:text="${visitForm.startTime}">15:30</td>
+                    <td><a class="btn-link" href="/visit/set-time">Zmień</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <form action="/visit/summary" method="post">
+            <div class="container">
+                <div class="row my-3">
+
+                    <div class="col">
+                        <label for="moreInfo">Dodatkowe informacje:</label>
+                        <textarea class="form-control" name="moreInfo" id="moreInfo"
+                                  placeholder="Miejsce na dodatkowe informacje dla stylistki" rows="3"></textarea>
+                    </div>
+
+                </div>
+                <!--            buttons-->
+                <div class="row">
+                    <div class="col-6">
+                        <a href="/visit/cancel">
+                            <button class="btn btn-secondary btn-block" type="button" name="treatmentId">Anuluj
+                            </button>
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-primary btn-block" type="submit" name="treatmentId">Wyślij do akceptacji
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

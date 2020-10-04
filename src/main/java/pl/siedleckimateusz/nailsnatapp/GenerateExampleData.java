@@ -2,20 +2,16 @@ package pl.siedleckimateusz.nailsnatapp;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import pl.siedleckimateusz.nailsnatapp.entity.Authority;
-import pl.siedleckimateusz.nailsnatapp.entity.GroupTreatment;
-import pl.siedleckimateusz.nailsnatapp.entity.TreatmentEntity;
-import pl.siedleckimateusz.nailsnatapp.entity.UserEntity;
-import pl.siedleckimateusz.nailsnatapp.entity.model.TreatmentModel;
+import pl.siedleckimateusz.nailsnatapp.entity.*;
 import pl.siedleckimateusz.nailsnatapp.entity.model.NewUser;
-import pl.siedleckimateusz.nailsnatapp.entity.model.NewVisit;
 import pl.siedleckimateusz.nailsnatapp.entity.model.PhotoCategoryModel;
-import pl.siedleckimateusz.nailsnatapp.service.PhotoCategoryService;
-import pl.siedleckimateusz.nailsnatapp.service.TreatmentService;
-import pl.siedleckimateusz.nailsnatapp.service.UserService;
-import pl.siedleckimateusz.nailsnatapp.service.VisitService;
+import pl.siedleckimateusz.nailsnatapp.entity.model.TreatmentDto;
+import pl.siedleckimateusz.nailsnatapp.service.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 @Component
@@ -25,12 +21,14 @@ public class GenerateExampleData implements CommandLineRunner {
     private final TreatmentService treatmentService;
     private final VisitService visitService;
     private final PhotoCategoryService photoCategoryService;
+    private final TimeOffService timeOffService;
 
-    public GenerateExampleData(UserService userService, TreatmentService treatmentService, VisitService visitService, PhotoCategoryService photoCategoryService) {
+    public GenerateExampleData(UserService userService, TreatmentService treatmentService, VisitService visitService, PhotoCategoryService photoCategoryService, TimeOffService timeOffService) {
         this.userService = userService;
         this.treatmentService = treatmentService;
         this.visitService = visitService;
         this.photoCategoryService = photoCategoryService;
+        this.timeOffService = timeOffService;
     }
 
     @Override
@@ -39,8 +37,8 @@ public class GenerateExampleData implements CommandLineRunner {
         generateTreatments();
         generateVisit();
         generatePhotoCategories();
+        generateTimesOff();
     }
-
 
     private void generateUsers() {
         NewUser userMatt = NewUser.builder()
@@ -69,10 +67,23 @@ public class GenerateExampleData implements CommandLineRunner {
                 .email("666rybka666@gmail.com")
                 .phoneNumber("726369636")
                 .authority(Authority.CLIENT)
-                .username("client")
+                .username("annarybak")
+                .extraTime(15)
                 .password("abcd")
                 .build();
 
+        NewUser userKarol= NewUser.builder()
+                .firstName("Karolina")
+                .lastName("Panasiuk")
+                .email("panasiukkarolina@gmail.com")
+                .phoneNumber("754243243")
+                .authority(Authority.CLIENT)
+                .username("panasiukkarolina")
+                .extraTime(20)
+                .password("abcd")
+                .build();
+
+        userService.save(userKarol);
         userService.save(userMatt);
         userService.save(userNat);
         userService.save(userAnn);
@@ -80,85 +91,88 @@ public class GenerateExampleData implements CommandLineRunner {
 
     private void generateTreatments() {
 
-        treatmentService.save(TreatmentModel.builder()
-                .name("Ściąganie poprzedniej stylizacji")
-                .group(GroupTreatment.TECHNICAL)
-                .price(20)
-                .time(30)
-                .allFingers(true)
+        treatmentService.save(TreatmentDto.builder()
+                .name("Manicure")
+                .time(100)
+                .price(60)
                 .build());
 
-        treatmentService.save(TreatmentModel.builder()
-                .name("Obróbka skórek")
-                .group(GroupTreatment.TECHNICAL)
-                .price(15)
-                .time(20)
-                .allFingers(true)
+        treatmentService.save(TreatmentDto.builder()
+                .name("Depilacja")
+                .price(100)
+                .time(130)
                 .build());
 
-        treatmentService.save(TreatmentModel.builder()
-                .name("Łatanie włóknami")
-                .group(GroupTreatment.TECHNICAL)
-                .price(5)
-                .time(15)
-                .allFingers(false)
+        treatmentService.save(TreatmentDto.builder()
+                .name("Henna")
+                .price(70)
+                .time(70)
                 .build());
 
-        treatmentService.save(TreatmentModel.builder()
-                .name("Przedłużanie żelem")
-                .group(GroupTreatment.TECHNICAL)
-                .price(5)
-                .time(10)
-                .allFingers(false)
+        treatmentService.save(TreatmentDto.builder()
+                .name("Pedicure")
+                .time(90)
+                .price(80)
                 .build());
 
-        treatmentService.save(TreatmentModel.builder()
-                .name("Malowanie - jeden kolor")
-                .group(GroupTreatment.PAINTING)
-                .price(15)
-                .time(10)
-                .allFingers(true)
+        treatmentService.save(TreatmentDto.builder()
+                .name("IBX System")
+                .time(45)
+                .price(45)
                 .build());
 
-        treatmentService.save(TreatmentModel.builder()
-                .name("Malowanie kilka kolorów")
-                .group(GroupTreatment.PAINTING)
-                .price(20)
-                .time(10)
-                .allFingers(true)
-                .build());
-
-        treatmentService.save(TreatmentModel.builder()
-                .name("Pyłek")
-                .group(GroupTreatment.PAINTING)
-                .price(10)
-                .time(5)
-                .allFingers(true)
-                .build());
-
-        treatmentService.save(TreatmentModel.builder()
-                .name("Zdobienie")
-                .group(GroupTreatment.PAINTING)
-                .price(10)
-                .time(10)
-                .allFingers(true)
-                .build());
     }
 
     private void generateVisit(){
         List<TreatmentEntity> allTreatment = treatmentService.findAll();
         List<UserEntity> allUsers = userService.findAll();
 
-        NewVisit newVisit = NewVisit.builder()
-                .startVisitDateTime(LocalDateTime.of(2020,10,4,12,30))
+        visitService.save(VisitEntity.builder()
+                .dateOfVisit(LocalDate.of(2020,10,4))
+                .startTime(LocalTime.of(12,30))
                 .user(allUsers.get(1))
-                .treatmentList(allTreatment.subList(3,5))
-                .comments("Mam nadzieję że będzie ok")
+                .treatment(allTreatment.get(1))
+                .moreInfo("Mam nadzieję że będzie ok")
+                .build());
+
+
+        visitService.save(VisitEntity.builder()
+                .dateOfVisit(LocalDate.of(2020,10,4))
+                .startTime(LocalTime.of(13,30))
+                .user(allUsers.get(3))
+                .treatment(allTreatment.get(2))
+                .build());
+
+        VisitEntity visit1 = VisitEntity.builder()
+                .dateOfVisit(LocalDate.of(2020,9,12))
+                .startTime(LocalTime.of(17,30))
+                .user(allUsers.get(3))
+                .treatment(allTreatment.get(1))
                 .build();
+        visit1.setStatus(VisitStatus.CANCELED);
 
-        visitService.save(newVisit);
+        visitService.save(visit1);
+
+        VisitEntity visit = VisitEntity.builder()
+                .dateOfVisit(LocalDate.of(2020, 10, 7))
+                .startTime(LocalTime.of(17, 30))
+                .user(allUsers.get(3))
+                .treatment(allTreatment.get(4))
+                .build();
+        visit.setStatus(VisitStatus.CONFIRMED);
+
+        visitService.save(visit);
+
+        VisitEntity visit2 = VisitEntity.builder()
+                .dateOfVisit(LocalDate.of(2020, 10, 13))
+                .startTime(LocalTime.of(12, 30))
+                .user(allUsers.get(3))
+                .treatment(allTreatment.get(1))
+                .build();
+        visit2.setStatus(VisitStatus.TO_CONFIRM_BY_USER);
+
+        visitService.save(visit2);
     }
-
 
     private void generatePhotoCategories() {
         photoCategoryService.save(PhotoCategoryModel.builder().name("Jeden kolor").build());
@@ -167,5 +181,51 @@ public class GenerateExampleData implements CommandLineRunner {
         photoCategoryService.save(PhotoCategoryModel.builder().name("Własny rysunek").build());
     }
 
+    private void generateTimesOff() {
+        TimeOffEntity timeOff1 = timeOffService.save(TimeOffEntity.builder()
+                .startTime(LocalTime.of(8, 0))
+                .endTime(LocalTime.of(16, 59))
+                .dayOfEvent(LocalDate.of(2020,9,14))
+                .repeat(Repeat.WEEKLY)
+                .build());
 
+        TimeOffEntity timeOff2 = timeOffService.save(TimeOffEntity.builder()
+                .startTime(LocalTime.of(8, 0))
+                .endTime(LocalTime.of(16, 59))
+                .dayOfEvent(LocalDate.of(2020,9,15))
+                .repeat(Repeat.WEEKLY)
+                .build());
+
+        TimeOffEntity timeOff3 = timeOffService.save(TimeOffEntity.builder()
+                .startTime(LocalTime.of(8, 0))
+                .endTime(LocalTime.of(16, 59))
+                .dayOfEvent(LocalDate.of(2020,9,16))
+                .repeat(Repeat.WEEKLY)
+                .build());
+
+        TimeOffEntity timeOff4 = timeOffService.save(TimeOffEntity.builder()
+                .dayOfEvent(LocalDate.of(2020,10,13))
+                .startTime(LocalTime.of(8, 0))
+                .endTime(LocalTime.of(20, 0))
+                .repeat(Repeat.NEVER)
+                .build());
+
+        TimeOffEntity timeOff5 = timeOffService.save(TimeOffEntity.builder()
+                .startTime(LocalTime.of(8, 0))
+                .endTime(LocalTime.of(21, 0))
+                .dayOfEvent(LocalDate.of(2020,9,5))
+                .repeat(Repeat.WEEKLY)
+                .expirationDate(LocalDate.of(2020,12, Month.DECEMBER.length(Year.of(2020).isLeap())))
+                .build());
+
+        timeOffService.save(TimeOffEntity.builder()
+                .startTime(LocalTime.of(8, 0))
+                .endTime(LocalTime.of(14, 0))
+                .dayOfEvent(LocalDate.of(2020,10,5))
+                .repeat(Repeat.DAILY)
+                .expirationDate(LocalDate.of(2020,12, Month.DECEMBER.length(Year.of(2020).isLeap())))
+                .build());
+
+
+    }
 }

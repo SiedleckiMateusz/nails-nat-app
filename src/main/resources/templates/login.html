@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rejestracja - Beauty By Siedlecka</title>
+
+    <link th:href="@{/css/bootstrap.min.css}" type="text/css" rel="stylesheet">
+
+    <link th:href="@{/css/style2.css}" type="text/css" rel="stylesheet">
+</head>
+<body class="text-center container bg-photo">
+<div class="row justify-content-center" style="margin-top: 50px">
+    <div class="myForm col-auto px-sm-5 py-2">
+        <form class="form-signin justify-content-center" th:action="@{/login}" method="post">
+
+            <div th:if="${param.error}" class="alert alert-danger">
+                Nieprawidłowy e-mail/login lub hasło
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                Zostałeś właśnie wylogowany
+            </div>
+            <div th:if="${param.created}" class="alert alert-success">
+                Konto zostało utworzone
+            </div>
+
+            <div class="row justify-content-center">
+                <a href="/">
+                    <img class="mb-4" src="http://serwer29026.lh.pl/beauty_by_siedlecka/logo/logo_3.png" alt="" width="120" height="120">
+                </a>
+
+                <h1 class="h3 mb-3 col-12 font-weight-normal text-white">Logowanie</h1>
+            </div>
+            <label for="username" class="col-form-label text-white">Login/E-mail</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="E-mail lub login" required autofocus>
+            <label for="password" class="col-form-label text-white">Hasło</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Hasło" required>
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Zapamiętaj mnie
+                </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj</button>
+            <div class="my-2">
+                <a class="alert-link text-white" href="/registration">Zarejestruj/Utwórz konto</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

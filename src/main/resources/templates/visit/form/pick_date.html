@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},~{::head},'Wizyta - Beauty by Siedlecka')}">
+<head>
+
+    <link type="text/css" rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link type="text/css" rel="stylesheet" href="/resources/demos/style.css">
+
+</head>
+<body>
+
+
+<div class="container mt-5 py-5">
+    <div class="jumbotron myForm text-white">
+        <h1 class="display-4">Data</h1>
+        <p class="lead">Wybierz datę która najbardziej Ci odpowiada. Niedostępne dni są zablokowane</p>
+        <hr class="my-4">
+        <br/>
+
+        <form  action="/visit/set-date" method="post">
+            <div th:if="${errorMessage!=null}" th:text="${errorMessage}" class="alert alert-danger" role="alert">
+                Tutaj zostanie wyświetlony błąd jeśli wystąpi
+            </div>
+            <div class="form-group row">
+                <div class="form-group col">
+                    <label for="inputDate">Wybrana data zabiegu:</label>
+                    <input class="form-control" type="text" id="inputDate" name="date" placeholder="Wybierz datę" value="" readonly>
+                    <div class="col-12" id="date" size="12"></div>
+                </div>
+            </div>
+
+<!--            buttons-->
+            <div class="row">
+                <div class="col-6">
+                    <a href="/visit/set-treatment">
+                        <button class="btn btn-secondary btn-block" type="button" name="treatmentId">&#x3C; Powrót</button>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-primary btn-block" type="submit" name="treatmentId">Dalej &#x3E;</button>
+                </div>
+
+
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    /* create an array of days which need to be disabled */
+
+    var disabledDays = /*[[${daysOff}]]*/ [];
+    console.log(disabledDays);
+    var minDateTab = /*[[${startDate}]]*/ [];
+    var minDate = new Date(minDateTab[0], minDateTab[1] - 1, minDateTab[2])
+    console.log(minDate);
+    var maxDateTab = /*[[${endDate}]]*/ [];
+    var maxDate = new Date(maxDateTab[0], maxDateTab[1] - 1, maxDateTab[2])
+    console.log(maxDate);
+
+    /* utility functions */
+    function nationalDays(date) {
+        var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+        console.log('Checking (raw): ' + m + '-' + d + '-' + y);
+        for (let i = 0; i < disabledDays.length; i++) {
+            console.log('compare: ' + (m + 1) + '-' + d + '-' + y + ' with ' + disabledDays)
+
+            let result = $.inArray((m + 1) + '-' + d + '-' + y, disabledDays);
+
+            if (result != -1 || new Date() > date) {
+                console.log('bad:  ' + (m + 1) + '-' + d + '-' + y + ' / ' + disabledDays[result]);
+                return [false];
+            }
+        }
+        console.log('good:  ' + (m + 1) + '-' + d + '-' + y);
+        return [true];
+    }
+
+    /* create datepicker */
+    var $j = jQuery.noConflict();
+
+    jQuery(document).ready(function () {
+        $j('#date').datepicker({
+            minDate: minDate,
+            maxDate: maxDate,
+            altField: '#inputDate',
+            defaultDate: null,
+            dateFormat: 'dd-mm-yy',
+            constrainInput: true,
+            beforeShowDay: nationalDays,
+            closeText: "Zamknij",
+            prevText: "&#x3C;Poprzedni",
+            nextText: "Następny&#x3E;",
+            currentText: "Dziś",
+            monthNames: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec",
+                "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
+            monthNamesShort: ["Sty", "Lu", "Mar", "Kw", "Maj", "Cze",
+                "Lip", "Sie", "Wrz", "Pa", "Lis", "Gru"],
+            dayNames: ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"],
+            dayNamesShort: ["Nie", "Pn", "Wt", "Śr", "Czw", "Pt", "So"],
+            dayNamesMin: ["N", "Pn", "Wt", "Śr", "Cz", "Pt", "So"],
+            weekHeader: "Tydz",
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ""
+        });
+
+        $j('#inputDate').val('');
+    });
+</script>
+
+
+</body>
+</html>

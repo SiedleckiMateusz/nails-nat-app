@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},~{::head},'Wizyta - Beauty by Siedlecka')}">
+
+<head>
+
+</head>
+<body>
+    <div class="container mt-5 py-5 ">
+    <div class="jumbotron my-bg-and-text">
+        <h1 class="display-4">Moje wizyty</h1>
+        <p class="lead">Znajdziesz tutaj wszystkie wizyty, te aktualne, oraz te już odbyte</p>
+        <hr class="my-4 hr-my">
+        <br/>
+
+
+<!--        actual visit-->
+        <div class="table-responsive-md">
+            <h3 class="mt-5">Aktualne:</h3>
+            <p th:if="${actual.isEmpty()}">Brak aktualnych wizyt...</p>
+            <table th:unless="${actual.isEmpty()}" class="table table-hover myForm">
+                <thead>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Godz.</th>
+                        <th scope="col">Zabieg</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody th:each="visit:${actual}">
+                    <tr th:class="${'color-status-'+visit.status.getStatForEmployee()}">
+                        <td th:text="${visit.dateOfVisit}">21-03-2020</td>
+                        <td th:text="${visit.startTime}">13:15</td>
+                        <td th:text="${visit.treatmentName}">Manicure</td>
+                        <td th:text="${visit.status.getStatForEmployee()}">Status</td>
+                        <td>
+                            <a class="btn btn-warning" th:href="'/visit/edit/'+${visit.id}">Przełóż</a>
+                            <a class="btn btn-danger" th:href="'/visit/remove/'+${visit.id}">Odwołaj</a>
+                            <a th:if="${visit.status.name().equals('TO_CONFIRM_BY_USER')}"
+                               class="btn btn-success" th:href="'/visit/confirm/'+${visit.id}">Potwierdź</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+<!--        .div-->
+
+        <hr class="my-4 hr-my">
+
+        <!--        history visit-->
+        <div class="table-responsive-md">
+            <h3 class="mt-5">Historia:</h3>
+            <p th:if="${history.isEmpty()}">Brak wizyt...</p>
+            <table th:unless="${history.isEmpty()}" class="table table-hover myForm">
+                <thead>
+                <tr>
+                    <th scope="col">Data</th>
+                    <th scope="col">Godz.</th>
+                    <th scope="col">Zabieg</th>
+                    <th scope="col">Tagi</th>
+                </tr>
+                </thead>
+                <tbody th:each="visit:${history}">
+                    <tr>
+                        <td th:text="${visit.dateOfVisit}">21-03-2020</td>
+                        <td th:text="${visit.startTime}">13:15</td>
+                        <td th:text="${visit.treatmentName}">Manicure</td>
+                        <td>some tags</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--        .div-->
+    </div>
+
+</div>
+</body>
+</html>

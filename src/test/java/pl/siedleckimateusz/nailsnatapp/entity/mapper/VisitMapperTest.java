@@ -7,7 +7,9 @@ import pl.siedleckimateusz.nailsnatapp.entity.UserEntity;
 import pl.siedleckimateusz.nailsnatapp.entity.VisitEntity;
 import pl.siedleckimateusz.nailsnatapp.entity.model.NewVisit;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,24 +21,6 @@ class VisitMapperTest {
     @BeforeEach
     void setUp() {
         mapper = new VisitMapper();
-    }
-
-    @Test
-    void mapToEntity() {
-//        given
-        NewVisit visit = NewVisit.builder()
-                .startVisitDateTime(LocalDateTime.now())
-                .treatmentList(Collections.singletonList(new TreatmentEntity()))
-                .user(new UserEntity())
-                .comments("My comment")
-                .build();
-//        when
-        VisitEntity visitEntity = mapper.toSave(visit);
-//        then
-
-        assertNotNull(visitEntity);
-        assertEquals(visit.getComments(),visitEntity.getComments());
-
     }
 
     void mapNullValue(){

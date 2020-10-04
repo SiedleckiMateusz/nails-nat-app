@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +33,8 @@ public class UserEntity implements UserDetails {
 
     private String phoneNumber;
 
+    private LocalDate birthDate;
+
     @Column(unique = true)
     private String username;
 
@@ -40,11 +42,15 @@ public class UserEntity implements UserDetails {
 
     private Authority authority;
 
+    private int extraTime = 0;
+
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     private List<VisitEntity> visits = new ArrayList<>();
 
     @Builder
-    public UserEntity(String firstName, String lastName, String email, String phoneNumber, String username, String password, Authority authority) {
+    public UserEntity(String firstName, String lastName, String email
+            , String phoneNumber, String username, String password
+            , Authority authority) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -88,4 +94,6 @@ public class UserEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }

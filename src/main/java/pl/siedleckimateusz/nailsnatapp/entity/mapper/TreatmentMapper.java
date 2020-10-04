@@ -2,28 +2,26 @@ package pl.siedleckimateusz.nailsnatapp.entity.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.siedleckimateusz.nailsnatapp.entity.TreatmentEntity;
-import pl.siedleckimateusz.nailsnatapp.entity.model.TreatmentModel;
+import pl.siedleckimateusz.nailsnatapp.entity.model.TreatmentDto;
 
 @Component
-public class TreatmentMapper implements Mapper<TreatmentModel,TreatmentEntity> {
+public class TreatmentMapper implements Mapper<TreatmentDto,TreatmentEntity> {
 
     @Override
-    public TreatmentEntity toSave(TreatmentModel treatment){
-        return treatment == null ? null : TreatmentEntity.builder()
+    public TreatmentEntity toSave(TreatmentDto treatment){
+        if (treatment==null) return null;
+
+        return TreatmentEntity.builder()
                 .name(treatment.getName())
-                .groupTreatment(treatment.getGroup())
                 .price(treatment.getPrice())
                 .time(treatment.getTime())
-                .allFinger(treatment.isAllFingers())
                 .build();
     }
 
-    public TreatmentModel toModel(TreatmentEntity t) {
+    public TreatmentDto toDto(TreatmentEntity t) {
         if (t==null) return null;
 
-        return TreatmentModel.builder()
-                .allFingers(t.isAllFinger())
-                .group(t.getGroupTreatment())
+        return TreatmentDto.builder()
                 .id(t.getId())
                 .name(t.getName())
                 .price(t.getPrice())

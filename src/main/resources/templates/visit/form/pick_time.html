@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},~{::head},'Wizyta - Beauty by Siedlecka')}">>>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container mt-5 py-5">
+    <div class="jumbotron myForm text-white">
+        <h1 class="display-4">Godzina</h1>
+        <p class="lead">Na podstawie wybranego dnia przedstawiamy propozycje godzin w których można odbyć zabieg</p>
+        <hr class="my-4">
+        <br/>
+
+        <form action="/visit/set-time" method="post">
+            <div class="container-fluid">
+                <div th:if="${errorMessage!=null}" th:text="${errorMessage}" class="alert alert-danger" role="alert">
+                    Tutaj zostanie wyświetlony błąd jeśli wystąpi
+                </div>
+
+                <div class="form-group row align-items-baseline text-dark" id="accordion">
+                    <!--                    one day-->
+                    <div th:each="day:${daysList}"
+                         class="col-12 col-md-6 col-lg-2 m-lg-2 p-1"
+                         th:style="'border: 1px solid #4e555b; border-radius: 5px; background-color:'+${today.equals(day.date)?'#cbcbcb':'#efefef'}">
+                        <h4 class="bg-transparent" th:text="${day.date}">21-08-2020</h4>
+                        <p class="bg-transparent" th:text="${day.dayOfWeek}">poniedziałek</p>
+                        <button th:if="${day.timesInHours.isEmpty()}" class="btn btn-block bg-transparent disabled"
+                                type="button">
+                            Niedostępny
+                        </button>
+                        <div th:unless="${day.timesInHours.isEmpty()}" th:each="timesInH:${day.timesInHours}">
+                            <div class="card bg-transparent text-center">
+                                <div class="card-header" th:id="'heading'+${day.date+timesInH.hour}">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-block collapsed" type="button" data-toggle="collapse"
+                                                th:data-target="'#collapse'+${day.date+timesInH.hour}"
+                                                aria-expanded="false"
+                                                th:aria-controls="'collapse'+${day.date+timesInH.hour}"
+                                                th:text="${timesInH.hour}">
+                                            12
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div th:id="'collapse'+${day.date+timesInH.hour}" class="collapse"
+                                     th:aria-labelledby="'heading'+${day.date+timesInH.hour}" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div th:each="time:${timesInH.timesList}">
+                                            <div>
+                                                <input class="form-check-input" type="radio" name="dateTime"
+                                                       th:id="${'radio'+day.date+time}" th:value="${day.date+' '+time}">
+                                                <label class="form-check-label" th:for="${'radio'+day.date+time}"
+                                                       th:text="${time}">
+                                                    12:15
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--            buttons-->
+            <div class="row">
+                <div class="col-6">
+                    <a href="/visit/set-date">
+                        <button class="btn btn-secondary btn-block" type="button" name="treatmentId">&#x3C;
+                            Powrót
+                        </button>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-primary btn-block" type="submit" name="treatmentId">Dalej &#x3E;</button>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

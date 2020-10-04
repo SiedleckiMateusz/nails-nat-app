@@ -2,9 +2,8 @@ package pl.siedleckimateusz.nailsnatapp.entity.mapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.siedleckimateusz.nailsnatapp.entity.GroupTreatment;
 import pl.siedleckimateusz.nailsnatapp.entity.TreatmentEntity;
-import pl.siedleckimateusz.nailsnatapp.entity.model.TreatmentModel;
+import pl.siedleckimateusz.nailsnatapp.entity.model.TreatmentDto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -21,11 +20,9 @@ class TreatmentMapperTest {
     @Test
     void mapToEntity() {
 //    given
-        TreatmentModel sample_treatment = TreatmentModel.builder()
+        TreatmentDto sample_treatment = TreatmentDto.builder()
                 .name("Sample Treatment")
-                .allFingers(true)
                 .time(20)
-                .group(GroupTreatment.TECHNICAL)
                 .price(10)
                 .build();
 

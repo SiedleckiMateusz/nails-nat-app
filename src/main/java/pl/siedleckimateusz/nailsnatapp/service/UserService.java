@@ -1,5 +1,6 @@
 package pl.siedleckimateusz.nailsnatapp.service;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,8 +37,34 @@ public class UserService implements UserDetailsService {
         return repo.findAll();
     }
 
+    public Optional<UserEntity> findByUserName(String username){
+        return repo.findByUsername(username);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return repo.findByUsername(s).orElseThrow(()->new UsernameNotFoundException(s+" not found"));
+        Optional<UserEntity> userByUsernameOpt = repo.findByUsername(s);
+        Optional<UserEntity> userByEmailOpt = repo.findByEmail(s);
+
+        if (userByEmailOpt.isPresent()){
+            return userByEmailOpt.get();
+        }
+        if (userByUsernameOpt.isPresent()){
+            return userByUsernameOpt.get();
+        }
+
+        throw new UsernameNotFoundException("Nie znaleziono użytkownika");
+    }
+
+    public UserEntity findLoggedUser(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails){
+            String username = ((UserDetails) principal).getUsername();
+            Optional<UserEntity> byUserName = repo.findByUsername(username);
+            return byUserName.orElseThrow(()->new UsernameNotFoundException("Nie ma użytkownika o podanej nazwie użytkownika"));
+        }
+
+        throw new UsernameNotFoundException("Nie udało się pobrać użytkownika");
     }
 }
