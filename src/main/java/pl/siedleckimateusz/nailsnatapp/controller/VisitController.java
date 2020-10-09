@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.siedleckimateusz.nailsnatapp.entity.Authority;
+import pl.siedleckimateusz.nailsnatapp.entity.VisitEntity;
 import pl.siedleckimateusz.nailsnatapp.entity.model.UserToSession;
 import pl.siedleckimateusz.nailsnatapp.entity.model.VisitForm;
 import pl.siedleckimateusz.nailsnatapp.entity.model.VisitToShowForUser;
@@ -231,10 +233,17 @@ public class VisitController {
             visitForm.setMoreInfo(moreInfo);
         }
 
-        if (visitService.save(visitForm)!=null){
+        VisitEntity savedVisit = visitService.save(visitForm);
+
+        if (savedVisit!=null){
             model.addAttribute("title","Udało się!");
             model.addAttribute("message","Twóje zlecenie wizyty zostało pomyślnie przesłane. W krótce dostaniesz potwierdzenie od pracownika");
             visitForm.clearVisit();
+
+            if (sessionUser.getAuthority()== Authority.EMPLOYEE){
+                return "redirect:/panel";
+//                return "redirect:/visit/"+savedVisit.getId();
+            }
             return "/success";
         }else {
             return "redirect:/error";

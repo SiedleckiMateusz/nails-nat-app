@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (body,headers,active)">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" type="text/css" rel="stylesheet">
+
+    <!-- Custom styles for this body -->
+    <!--  <link th:href="@{/css/style.css}" rel="stylesheet">-->
+    <link th:href="@{/css/style2.css}" type="text/css" rel="stylesheet">
+
+    <th:block th:include="${headers}">
+<!--        ja pitole-->
+    </th:block>
+</head>
+
+<body class="bg-dark text-white">
+
+
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mt-4 mb-3">
+        <a class="navbar-brand" href="/">
+            <img class="img_logo" src="http://serwer29026.lh.pl/beauty_by_siedlecka/logo/logo_3.png" alt="Logo">
+        </a>
+        <small>Panel Pracownika</small>
+    </h1>
+
+    <!-- Content Row -->
+    <div class="row">
+        <!-- Sidebar Column -->
+        <div class="col-lg-3 mb-4">
+            <div class="list-group">
+                <a href="/panel" th:class="${'list-group-item '+(active=='home'?'active':'')}">Home</a>
+                <a href="/panel/new-visit" th:class="${'list-group-item '+(active=='newVisit'?'active':'')}">Umów wizytę</a>
+                <a href="/panel/my-calendar" th:class="${'list-group-item '+(active=='calendar'?'active':'')}">Kalendarz</a>
+                <a href="/panel/time-off" th:class="${'list-group-item '+(active=='timeOff'?'active':'')}">Time Off</a>
+                <a href="/panel/clients" th:class="${'list-group-item '+(active=='clients'?'active':'')}">Klienci</a>
+                <a href="/panel/dictionary" th:class="${'list-group-item '+(active=='dictionary'?'active':'')}">Słownik wizyt</a>
+            </div>
+        </div>
+        <!-- Content Column -->
+        <div class="col-lg-9 mb-4">
+            <th:block th:include="${body}"/>
+        </div>
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<!-- Bootstrap core JavaScript -->
+<script th:src="@{/static/js/jquery/jquery.min.js}"></script>
+<script th:src="@{/static/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+
+</html>
