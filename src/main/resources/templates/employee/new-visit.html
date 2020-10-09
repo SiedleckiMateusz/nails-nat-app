@@ -6,5 +6,35 @@
 </head>
 <body>
 <h1>Nowa wizyta</h1>
+
+<div >
+  <form class="container" method="post" action="/panel/new-visit">
+    <table>
+      <tr>
+        <td>Imię: </td>
+        <td>
+          <input class="form-control" type="text" id="firstName" name="firstName" placeholder="Imię">
+        </td>
+      </tr>
+
+      <tr>
+        <td>Nazwisko: </td>
+        <td>
+          <input class="form-control" type="text" id="lastName" name="lastName" placeholder="Nazwisko">
+        </td>
+      </tr>
+
+      <tr>
+        <td>Nr. tel: </td>
+        <td>
+          <input class="form-control" type="text" id="phoneNumber" name="phoneNumber" placeholder="nr telefonu">
+        </td>
+      </tr>
+    </table>
+
+    <button type="submit">Dalej</button>
+  </form>
+
+</div>
 </body>
 </html>

@@ -19,11 +19,11 @@
     </th:block>
 </head>
 
-<body class="bg-dark text-white">
+<body class="text-white" style="background-color: #4e555b">
 
 
 <!-- Page Content -->
-<div class="container">
+<div class="container" style="background-color: #89959f">
 
     <!-- Page Heading/Breadcrumbs -->
     <h1 class="mt-4 mb-3">
@@ -44,6 +44,7 @@
                 <a href="/panel/time-off" th:class="${'list-group-item '+(active=='timeOff'?'active':'')}">Time Off</a>
                 <a href="/panel/clients" th:class="${'list-group-item '+(active=='clients'?'active':'')}">Klienci</a>
                 <a href="/panel/dictionary" th:class="${'list-group-item '+(active=='dictionary'?'active':'')}">Słownik wizyt</a>
+                <a href="/logout" class="btn btn-danger">Wyloguj</a>
             </div>
         </div>
         <!-- Content Column -->

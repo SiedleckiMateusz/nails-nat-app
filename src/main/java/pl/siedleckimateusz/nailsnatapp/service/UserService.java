@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.siedleckimateusz.nailsnatapp.entity.Authority;
 import pl.siedleckimateusz.nailsnatapp.entity.UserEntity;
 import pl.siedleckimateusz.nailsnatapp.entity.mapper.UserMapper;
 import pl.siedleckimateusz.nailsnatapp.entity.model.NewUser;
@@ -42,6 +43,20 @@ public class UserService implements UserDetailsService {
         return repo.findByUsername(username);
     }
 
+    public UserEntity saveOrGetExist(String firstName, String lastName, String phoneNumber){
+        Optional<UserEntity> userOpt = repo.findByFirstNameAndLastNameAndPhoneNumberContains(firstName, lastName, phoneNumber);
+
+        return userOpt.orElseGet(() -> save(
+                NewUser.builder()
+                        .firstName(firstName)
+                        .lastName(lastName)
+                        .phoneNumber(phoneNumber)
+                        .username(firstName.substring(0,1).toLowerCase()+lastName.toLowerCase())
+                        .password(phoneNumber)
+                        .authority(Authority.CLIENT)
+                        .build()));
+
+    }
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Optional<UserEntity> userByUsernameOpt = repo.findByUsername(s);
@@ -80,4 +95,6 @@ public class UserService implements UserDetailsService {
 
         return repo.save(userToSave);
     }
+
+
 }

@@ -30,19 +30,19 @@ public class UserController {
     @GetMapping("/new")
     public String newUserForm(UserForm userForm) {
 
-        return "registration2";
+        return "registration";
     }
 
     @PostMapping
     public String saveNew(@Valid UserForm userForm, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()){
-            return "registration2";
+            return "registration";
         }
 
         if (!Arrays.equals(userForm.getPassword(),userForm.getPassword2())){
             model.addAttribute("passwordMatch","Hasła nie są takie same. Spróbuj ponownie");
-            return "registration2";
+            return "registration";
         }
 
         userForm.setAuthority(Authority.CLIENT);
