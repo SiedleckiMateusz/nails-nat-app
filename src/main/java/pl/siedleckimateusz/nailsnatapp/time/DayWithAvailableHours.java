@@ -39,6 +39,10 @@ public class DayWithAvailableHours {
         return timesInHourList;
     }
 
+    public Optional<TimesInHour> getAllForHour(int hour){
+        return timesInHours.stream().filter(t->t.getHour()==hour).findFirst();
+    }
+
     public static String setDayOfWeek(int value) {
         switch (value){
             case 1:

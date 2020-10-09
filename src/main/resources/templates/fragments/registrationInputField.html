@@ -12,7 +12,7 @@
             <circle cx="8" cy="4.5" r="1"/>
         </svg>
     </button>
-    <input th:type="${typeField}" th:id="${fieldName}" th:name="${fieldName}" class="form-control" th:placeholder="${labelTitle}" autofocus
+    <input th:type="${typeField}" th:field="${fieldName}" class="form-control" th:placeholder="${labelTitle}" autofocus
            th:oninvalid="this.setCustomValidity(${vadilityMessage})"
            oninput="setCustomValidity('')">
     <div th:if="${errorMessage!=null}" class="myError alert-danger" th:text="${errorMessage}">Zobaczymy jak wygląda jakiś długi error</div>

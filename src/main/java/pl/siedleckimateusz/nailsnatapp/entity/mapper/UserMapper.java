@@ -4,7 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.siedleckimateusz.nailsnatapp.entity.UserEntity;
 import pl.siedleckimateusz.nailsnatapp.entity.model.NewUser;
-import pl.siedleckimateusz.nailsnatapp.entity.model.UserToSession;
+import pl.siedleckimateusz.nailsnatapp.entity.model.UserForm;
 
 @Component
 public class UserMapper implements Mapper<NewUser,UserEntity> {
@@ -25,24 +25,22 @@ public class UserMapper implements Mapper<NewUser,UserEntity> {
                 .email(newUser.getEmail())
                 .phoneNumber(newUser.getPhoneNumber())
                 .authority(newUser.getAuthority())
-                .extraTime(newUser.getExtraTime())
                 .build();
     }
 
-    public UserToSession toSession(UserEntity o){
-        if (o==null)return null;
 
-        return UserToSession.builder()
+    public UserEntity toSave(UserForm o) {
+        if (o==null) return null;
+
+        return UserEntity.builder()
                 .authority(o.getAuthority())
-                .email(o.getEmail())
-                .extraTime(o.getExtraTime())
-                .firstName(o.getFirstName())
-                .lastName(o.getLastName())
-                .id(o.getId())
                 .phoneNumber(o.getPhoneNumber())
+                .email(o.getEmail())
+                .password(passwordEncoder.encode(o.getStringPassword()))
                 .username(o.getUsername())
+                .lastName(o.getLastName())
+                .firstName(o.getFirstName())
+                .birthDate(o.getBirthDateLocalDate())
                 .build();
     }
-
-
 }

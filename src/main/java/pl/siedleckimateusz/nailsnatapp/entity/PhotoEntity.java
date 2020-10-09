@@ -1,5 +1,6 @@
 package pl.siedleckimateusz.nailsnatapp.entity;
 
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class PhotoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String description;
     private String url;

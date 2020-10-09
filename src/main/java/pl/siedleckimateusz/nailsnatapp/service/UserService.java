@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import pl.siedleckimateusz.nailsnatapp.entity.UserEntity;
 import pl.siedleckimateusz.nailsnatapp.entity.mapper.UserMapper;
 import pl.siedleckimateusz.nailsnatapp.entity.model.NewUser;
+import pl.siedleckimateusz.nailsnatapp.entity.model.UserForm;
 import pl.siedleckimateusz.nailsnatapp.repository.UserRepo;
 
 import java.util.List;
@@ -66,5 +67,17 @@ public class UserService implements UserDetailsService {
         }
 
         throw new UsernameNotFoundException("Nie udało się pobrać użytkownika");
+    }
+
+    public UserEntity save(UserForm userForm) {
+        UserEntity userToSave = mapper.toSave(userForm);
+
+        Optional<UserEntity> userOpt =
+                repo.findByFirstNameAndLastNameAndPhoneNumberContains(userForm.getFirstName()
+                        , userForm.getLastName(), userForm.getPhoneNumber());
+
+        userOpt.ifPresent(userEntity -> userToSave.setId(userEntity.getId()));
+
+        return repo.save(userToSave);
     }
 }

@@ -12,10 +12,10 @@
 <div style="margin-top: 50px"></div>
 <div class="row justify-content-center">
     <div class="myForm col-auto px-sm-5 py-2">
-        <form class="form-signin justify-content-center" th:action="@{/createAccount}" method="post">
+        <form class="form-signin justify-content-center" th:action="@{/createAccount}" th:object="${user}" method="post">
 
             <div th:if="${param.error}" class="alert alert-error">
-                Nieprawidłowy e-mail/login lub hasło
+                Niestety w formularzu wystąpiły błędy. Popraw je aby kontynuować.
             </div>
 
             <div class="row justify-content-center">
@@ -25,7 +25,7 @@
                 <h1 class="h3 mb-3 col-12 font-weight-normal text-white">Rejestracja</h1>
             </div>
             <div class="row">
-                <div th:replace="fragments/registrationInputField.html :: field('text','Imię','firstName',null,'Wprowadź imię',null)"></div>
+                <div th:replace="fragments/registrationInputField.html :: field('text','Imię',*{firstName},null,'Wprowadź imię',null)"></div>
                 <div th:replace="fragments/registrationInputField.html :: field('text','Nazwisko','lastName',null,'Wprowadź nazwisko',null)"></div>
             </div>
 

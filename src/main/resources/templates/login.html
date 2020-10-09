@@ -19,7 +19,7 @@
             <div th:if="${param.logout}" class="alert alert-success">
                 Zostałeś właśnie wylogowany
             </div>
-            <div th:if="${param.created}" class="alert alert-success">
+            <div th:if="${param.createdAccount}" class="alert alert-success">
                 Konto zostało utworzone
             </div>
 
@@ -41,7 +41,7 @@
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj</button>
             <div class="my-2">
-                <a class="alert-link text-white" href="/registration">Zarejestruj/Utwórz konto</a>
+                <a class="alert-link text-white" href="/user/new">Zarejestruj/Utwórz konto</a>
             </div>
         </form>
     </div>

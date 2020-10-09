@@ -21,6 +21,7 @@ import java.util.List;
 @Table(name = "user")
 public class UserEntity implements UserDetails {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -50,7 +51,7 @@ public class UserEntity implements UserDetails {
     @Builder
     public UserEntity(String firstName, String lastName, String email
             , String phoneNumber, String username, String password
-            , Authority authority) {
+            , Authority authority, LocalDate birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -58,6 +59,7 @@ public class UserEntity implements UserDetails {
         this.username = username;
         this.password = password;
         this.authority = authority;
+        this.birthDate = birthDate;
     }
 
     @Override

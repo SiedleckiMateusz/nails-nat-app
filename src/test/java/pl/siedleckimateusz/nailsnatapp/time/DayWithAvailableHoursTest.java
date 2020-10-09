@@ -1,6 +1,5 @@
 package pl.siedleckimateusz.nailsnatapp.time;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +8,6 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,11 +34,10 @@ class DayWithAvailableHoursTest {
 
     @Test
     public void should_return_list_with_11_hour() {
-
+//        given
+        int hour = 11;
         //when
-        Optional<TimesInHour> elevenOptional = dayWithAvailableHours.getTimesInHours().stream()
-                .filter(t -> t.getHour() == 11)
-                .findFirst();
+        Optional<TimesInHour> elevenOptional = dayWithAvailableHours.getAllForHour(hour);
 
         //then
         System.out.println(elevenOptional.orElse(null));
@@ -50,8 +47,10 @@ class DayWithAvailableHoursTest {
 
     @Test
     public void should_get_empty_optional_for_16_hour() {
+//        given
+        int hour = 16;
         //when
-        Optional<TimesInHour> sixteenOpt = dayWithAvailableHours.getTimesInHours().stream().filter(t -> t.getHour() == 16).findFirst();
+        Optional<TimesInHour> sixteenOpt = dayWithAvailableHours.getAllForHour(hour);
 
 
         //then

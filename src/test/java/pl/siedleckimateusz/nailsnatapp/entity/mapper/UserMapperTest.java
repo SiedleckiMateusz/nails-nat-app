@@ -41,8 +41,10 @@ class UserMapperTest {
 
     @Test
     void mapNullValue(){
+//        given
+        NewUser newUser = null;
 //        when
-        UserEntity userEntity = userMapper.toSave(null);
+        UserEntity userEntity = userMapper.toSave(newUser);
 //        then
         assertNull(userEntity);
     }
